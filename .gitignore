@@ -1,0 +1,17 @@
+# Python cache files
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+
+# Local member data
+Persistence/members.json
+
+# Environment variables and secrets
+.env
+.env.*
+
+# VS Code settings
+.vscode/
