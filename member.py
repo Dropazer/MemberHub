@@ -19,9 +19,3 @@ class Member:
         self.birth_date = birth_date
         self.address = address
         self.contact = contact
-
-    def change_last_name(self, new_last_name):
-        if not new_last_name.isalpha():
-            raise ValueError("The last name must contain only letters.")
-
-        self.last_name = new_last_name

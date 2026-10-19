@@ -21,13 +21,20 @@ class MemberManagement:
             if member.member_id == member_id:
                 self.members.remove(member)
                 return
-
-    # Change a member's last name
-    def edit_member(self, member_id, new_last_name):
+    
+    # Change name of a member
+    def edit_member_name(self, member_id, new_last_name):
         member = self.find_member_by_id(member_id)
 
         if member is not None:
-            member.change_last_name(new_last_name)
+            member.last_name = new_last_name
+
+    # Change city of a member
+    def edit_member_city(self, member_id, new_city):
+        member = self.find_member_by_id(member_id)
+
+        if member is not None:
+            member.address.city = new_city
 
     # Sort members by last name
     def sort_members(self):
