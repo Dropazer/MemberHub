@@ -27,7 +27,7 @@ class MemberManagement:
         member = self.find_member_by_id(member_id)
 
         if member is not None:
-            member.last_name = new_last_name
+            member.change_last_name(new_last_name)
 
     # Sort members by last name
     def sort_members(self):
