@@ -114,6 +114,7 @@ class Cli:
                     )
 
             elif choice == "4":
+                
                 # Read and validate the member ID
                 try:
                     member_id = int(input("Member ID: "))
@@ -128,7 +129,12 @@ class Cli:
                     print("Member not found.")
                 else:
                     print(f"Current member: {member.first_name} {member.last_name}")
+                    
                     new_last_name = input("New last name: ")
+
+                    if not new_last_name.isalpha():
+                        print("The last name must contain only letters.")
+                        continue
 
                     # Update the last name and save the changes
                     self.member_management.edit_member(
