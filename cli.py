@@ -19,10 +19,12 @@ class Cli:
         print("1. Show members")
         print("2. Add member")
         print("3. Search member")
-        print("4. Edit member")
-        print("5. Delete member")
-        print("6. Sort members")
-        print("7. Exit program")
+        print("4. Edit member name")
+        print("5. Edit member location (postal_code & city)")
+        print("6. Edit member street")
+        print("7. Delete member")
+        print("8. Sort members")
+        print("9. Exit program")
         print()
 
         user_input = input("Please select an option: ")
@@ -137,7 +139,7 @@ class Cli:
                         continue
 
                     # Update the last name and save the changes
-                    self.member_management.edit_member(
+                    self.member_management.edit_member_name(
                         member_id, new_last_name
                     )
 
@@ -148,6 +150,75 @@ class Cli:
                     print("Member updated successfully.")
 
             elif choice == "5":
+                
+                try:
+                    member_id = int(input("Member ID: "))
+                except ValueError:
+                    print("Please enter a valid member ID.")
+                    continue
+
+                member = self.member_management.find_member_by_id(member_id)
+
+                if member is None:
+                    print("Member not found.")
+                else:
+                    print(f"Current member: {member.first_name} {member.last_name}, {member.address.postal_code}, {member.address.city}")
+
+                    new_postal_code = input("New postal code: ")
+                    new_city = input("New city: ")
+
+                    if not new_city.isalpha():
+                        print("The city name must contain only letters.")
+                        continue
+
+                    if not new_postal_code.isdigit() or len(new_postal_code) != 4:
+                        print("The postal code must contain exactly 4 digits.")
+                        continue
+
+                    self.member_management.edit_member_location(
+                        member_id, new_postal_code, new_city
+                    )
+
+                    self.persistence.save_members(
+                        self.member_management.members
+                    )
+
+                    print("Member updated successfully.")
+
+
+            elif choice == "6":
+                
+                try:
+                    member_id = int(input("Member ID: "))
+                except ValueError:
+                    print("Please enter a valid member ID.")
+                    continue
+
+                member = self.member_management.find_member_by_id(member_id)
+
+                if member is None:
+                    print("Member not found.")
+                else:
+                    print(f"Current member: {member.first_name} {member.last_name}, street: {member.address.street}")
+                    
+                    new_street = input("New street and house number: ")
+
+                    if not new_street.strip():
+                        print("The street address must not be empty.")
+                        continue
+
+                    self.member_management.edit_member_street(
+                        member_id, new_street
+                    )
+
+                    self.persistence.save_members(
+                        self.member_management.members
+                    )
+
+                    print("Member updated successfully.")
+
+
+            elif choice == "7":
                 # Read and validate the member ID
                 try:
                     member_id = int(input("Member ID: "))
@@ -170,7 +241,7 @@ class Cli:
 
                     print(f"Member {member.first_name} {member.last_name} deleted.")
 
-            elif choice == "6":
+            elif choice == "8":
                 # Sort members alphabetically by last name
                 self.member_management.sort_members()
 
@@ -181,7 +252,7 @@ class Cli:
                         f"{member.last_name} {member.first_name}"
                     )
 
-            elif choice == "7":
+            elif choice == "9":
                 # Exit the menu loop
                 print("Exiting program.")
                 break

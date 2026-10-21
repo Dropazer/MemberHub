@@ -29,12 +29,20 @@ class MemberManagement:
         if member is not None:
             member.last_name = new_last_name
 
-    # Change city of a member
-    def edit_member_city(self, member_id, new_city):
+    # Change city and postal code of a member
+    def edit_member_location(self, member_id, new_postal_code, new_city):
         member = self.find_member_by_id(member_id)
 
         if member is not None:
             member.address.city = new_city
+            member.address.postal_code = new_postal_code
+
+    # Change street of a member 
+    def edit_member_street(self, member_id, new_street):
+        member = self.find_member_by_id(member_id)
+
+        if member is not None:
+            member.address.street = new_street
 
     # Sort members by last name
     def sort_members(self):
