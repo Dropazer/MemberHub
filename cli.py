@@ -22,9 +22,11 @@ class Cli:
         print("4. Edit member name")
         print("5. Edit member location (postal_code & city)")
         print("6. Edit member street")
-        print("7. Delete member")
-        print("8. Sort members")
-        print("9. Exit program")
+        print("7. Edit member email")
+        print("8. Edit member phone number")
+        print("9. Delete member")
+        print("10. Sort members")
+        print("11. Exit program")
         print()
 
         user_input = input("Please select an option: ")
@@ -219,6 +221,70 @@ class Cli:
 
 
             elif choice == "7":
+
+                try:
+                    member_id = int(input("Member ID: "))
+                except ValueError:
+                    print("Please enter a valid member ID.")
+                    continue
+
+                member = self.member_management.find_member_by_id(member_id)
+
+                if member is None:
+                    print("Member not found.")
+                else:
+                    print(f"Current member: {member.first_name} {member.last_name}, email: {member.contact.email}")
+
+                    new_email = input("New email address: ")
+
+                    if not new_email.strip():
+                        print("The email address must not be empty")
+                        continue
+
+                    self.member_management.edit_member_email(
+                        member_id, new_email
+                    )
+
+                    self.persistence.save_members(
+                        self.member_management.members
+                    )
+
+                    print("Member updated successfully.")
+
+
+            elif choice == "8":
+
+                try:
+                    member_id = int(input("Member ID: "))
+                except ValueError:
+                    print("Please enter a valid member ID.")
+                    continue
+
+                member = self.member_management.find_member_by_id(member_id)
+
+                if member is None:
+                    print("Member not found.")
+                else:
+                    print(f"Current member: {member.first_name} {member.last_name}, phone: {member.contact.phone}")
+
+                    new_phone = input("New phone number: ")
+
+                    if not new_phone.isdigit() or len(new_phone) != 10:
+                        print("The phone number must contain exactly 10 digits. E.g 0781234568")
+                        continue
+
+                    self.member_management.edit_member_phone(
+                        member_id, new_phone
+                    )
+
+                    self.persistence.save_members(
+                        self.member_management.members
+                    )
+
+                    print("Member updated successfully.")
+
+
+            elif choice == "9":
                 # Read and validate the member ID
                 try:
                     member_id = int(input("Member ID: "))
@@ -241,7 +307,7 @@ class Cli:
 
                     print(f"Member {member.first_name} {member.last_name} deleted.")
 
-            elif choice == "8":
+            elif choice == "10":
                 # Sort members alphabetically by last name
                 self.member_management.sort_members()
 
@@ -252,7 +318,7 @@ class Cli:
                         f"{member.last_name} {member.first_name}"
                     )
 
-            elif choice == "9":
+            elif choice == "11":
                 # Exit the menu loop
                 print("Exiting program.")
                 break
