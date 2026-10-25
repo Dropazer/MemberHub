@@ -34,6 +34,22 @@ class Cli:
 
         return user_input
 
+    def get_member_by_input(self):
+
+        try:
+            member_id = int(input("Member ID: "))
+        except ValueError:
+            print("Please enter a valid member ID.")
+            return None
+
+        member = self.member_management.find_member_by_id(member_id)
+
+        if member is None:
+            print("Member not found.")
+
+        return member
+
+
     def start(self):
         # Repeat the menu until the user exits the program
         while True:
@@ -119,193 +135,153 @@ class Cli:
 
             elif choice == "4":
                 
-                # Read and validate the member ID
-                try:
-                    member_id = int(input("Member ID: "))
-                except ValueError:
-                    print("Please enter a valid member ID.")
-                    continue
-
-                # Check whether the member exists
-                member = self.member_management.find_member_by_id(member_id)
+                member = self.get_member_by_input()
 
                 if member is None:
-                    print("Member not found.")
-                else:
-                    print(f"Current member: {member.first_name} {member.last_name}")
-                    
-                    new_last_name = input("New last name: ")
+                    continue
 
-                    if not new_last_name.isalpha():
-                        print("The last name must contain only letters.")
-                        continue
+                print(f"Current member: {member.first_name} {member.last_name}")
+                
+                new_last_name = input("New last name: ")
 
-                    # Update the last name and save the changes
-                    self.member_management.edit_member_name(
-                        member_id, new_last_name
-                    )
+                if not new_last_name.isalpha():
+                    print("The last name must contain only letters.")
+                    continue
 
-                    self.persistence.save_members(
-                        self.member_management.members
-                    )
+                # Update the last name and save the changes
+                self.member_management.edit_member_name(
+                    member.member_id, new_last_name
+                )
 
-                    print("Member updated successfully.")
+                self.persistence.save_members(
+                    self.member_management.members
+                )
+
+                print("Member updated successfully.")
 
             elif choice == "5":
                 
-                try:
-                    member_id = int(input("Member ID: "))
-                except ValueError:
-                    print("Please enter a valid member ID.")
-                    continue
-
-                member = self.member_management.find_member_by_id(member_id)
+                member = self.get_member_by_input()
 
                 if member is None:
-                    print("Member not found.")
-                else:
-                    print(f"Current member: {member.first_name} {member.last_name}, {member.address.postal_code}, {member.address.city}")
+                    continue
 
-                    new_postal_code = input("New postal code: ")
-                    new_city = input("New city: ")
+                print(f"Current member: {member.first_name} {member.last_name}, {member.address.postal_code}, {member.address.city}")
 
-                    if not new_city.isalpha():
-                        print("The city name must contain only letters.")
-                        continue
+                new_postal_code = input("New postal code: ")
+                new_city = input("New city: ")
 
-                    if not new_postal_code.isdigit() or len(new_postal_code) != 4:
-                        print("The postal code must contain exactly 4 digits.")
-                        continue
+                if not new_city.isalpha():
+                    print("The city name must contain only letters.")
+                    continue
 
-                    self.member_management.edit_member_location(
-                        member_id, new_postal_code, new_city
-                    )
+                if not new_postal_code.isdigit() or len(new_postal_code) != 4:
+                    print("The postal code must contain exactly 4 digits.")
+                    continue
 
-                    self.persistence.save_members(
-                        self.member_management.members
-                    )
+                self.member_management.edit_member_location(
+                    member.member_id, new_postal_code, new_city
+                )
 
-                    print("Member updated successfully.")
+                self.persistence.save_members(
+                    self.member_management.members
+                )
+
+                print("Member updated successfully.")
 
 
             elif choice == "6":
                 
-                try:
-                    member_id = int(input("Member ID: "))
-                except ValueError:
-                    print("Please enter a valid member ID.")
-                    continue
-
-                member = self.member_management.find_member_by_id(member_id)
+                member = self.get_member_by_input()
 
                 if member is None:
-                    print("Member not found.")
-                else:
-                    print(f"Current member: {member.first_name} {member.last_name}, street: {member.address.street}")
-                    
-                    new_street = input("New street and house number: ")
+                    continue
+                
+                print(f"Current member: {member.first_name} {member.last_name}, street: {member.address.street}")
+                
+                new_street = input("New street and house number: ")
 
-                    if not new_street.strip():
-                        print("The street address must not be empty.")
-                        continue
+                if not new_street.strip():
+                    print("The street address must not be empty.")
+                    continue
 
-                    self.member_management.edit_member_street(
-                        member_id, new_street
-                    )
+                self.member_management.edit_member_street(
+                    member.member_id, new_street
+                )
 
-                    self.persistence.save_members(
-                        self.member_management.members
-                    )
+                self.persistence.save_members(
+                    self.member_management.members
+                )
 
-                    print("Member updated successfully.")
+                print("Member updated successfully.")
 
 
             elif choice == "7":
 
-                try:
-                    member_id = int(input("Member ID: "))
-                except ValueError:
-                    print("Please enter a valid member ID.")
-                    continue
-
-                member = self.member_management.find_member_by_id(member_id)
+                member = self.get_member_by_input()
 
                 if member is None:
-                    print("Member not found.")
-                else:
-                    print(f"Current member: {member.first_name} {member.last_name}, email: {member.contact.email}")
+                    continue
 
-                    new_email = input("New email address: ")
+                print(f"Current member: {member.first_name} {member.last_name}, email: {member.contact.email}")
 
-                    if not new_email.strip():
-                        print("The email address must not be empty")
-                        continue
+                new_email = input("New email address: ")
 
-                    self.member_management.edit_member_email(
-                        member_id, new_email
-                    )
+                if not new_email.strip():
+                    print("The email address must not be empty")
+                    continue
 
-                    self.persistence.save_members(
-                        self.member_management.members
-                    )
+                self.member_management.edit_member_email(
+                    member.member_id, new_email
+                )
 
-                    print("Member updated successfully.")
+                self.persistence.save_members(
+                    self.member_management.members
+                )
+
+                print("Member updated successfully.")
 
 
             elif choice == "8":
 
-                try:
-                    member_id = int(input("Member ID: "))
-                except ValueError:
-                    print("Please enter a valid member ID.")
-                    continue
-
-                member = self.member_management.find_member_by_id(member_id)
+                member = self.get_member_by_input()
 
                 if member is None:
-                    print("Member not found.")
-                else:
-                    print(f"Current member: {member.first_name} {member.last_name}, phone: {member.contact.phone}")
+                    continue
 
-                    new_phone = input("New phone number: ")
+                print(f"Current member: {member.first_name} {member.last_name}, phone: {member.contact.phone}")
 
-                    if not new_phone.isdigit() or len(new_phone) != 10:
-                        print("The phone number must contain exactly 10 digits. E.g 0781234568")
-                        continue
+                new_phone = input("New phone number: ")
 
-                    self.member_management.edit_member_phone(
-                        member_id, new_phone
-                    )
+                if not new_phone.isdigit() or len(new_phone) != 10:
+                    print("The phone number must contain exactly 10 digits. E.g 0781234568")
+                    continue
 
-                    self.persistence.save_members(
-                        self.member_management.members
-                    )
+                self.member_management.edit_member_phone(
+                    member.member_id, new_phone
+                )
 
-                    print("Member updated successfully.")
+                self.persistence.save_members(
+                    self.member_management.members
+                )
+
+                print("Member updated successfully.")
 
 
             elif choice == "9":
-                # Read and validate the member ID
-                try:
-                    member_id = int(input("Member ID: "))
-                except ValueError:
-                    print("Please enter a valid member ID.")
-                    continue
 
-                # Find the member before deleting it
-                member = self.member_management.find_member_by_id(member_id)
+                member = self.get_member_by_input()
 
                 if member is None:
-                    print("Member not found.")
-                else:
-                    # Remove the member and save the updated list
-                    self.member_management.remove_member(member_id)
+                    continue
 
-                    self.persistence.save_members(
-                        self.member_management.members
-                    )
+                self.member_management.remove_member(member.member_id)
 
-                    print(f"Member {member.first_name} {member.last_name} deleted.")
+                self.persistence.save_members(
+                    self.member_management.members
+                )
+
+                print(f"Member {member.first_name} {member.last_name} deleted.")
 
             elif choice == "10":
                 # Sort members alphabetically by last name
