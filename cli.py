@@ -49,6 +49,11 @@ class Cli:
 
         return member
 
+    def save_members(self):
+        self.persistence.save_members(
+            self.member_management.members
+        )
+
 
     def start(self):
         # Repeat the menu until the user exits the program
@@ -113,9 +118,7 @@ class Cli:
                 # Add the member and save the updated list
                 self.member_management.add_member(member)
 
-                self.persistence.save_members(
-                    self.member_management.members
-                )
+                self.save_members()
 
                 print("Member added successfully.")
 
@@ -153,9 +156,7 @@ class Cli:
                     member.member_id, new_last_name
                 )
 
-                self.persistence.save_members(
-                    self.member_management.members
-                )
+                self.save_members()
 
                 print("Member updated successfully.")
 
@@ -183,9 +184,7 @@ class Cli:
                     member.member_id, new_postal_code, new_city
                 )
 
-                self.persistence.save_members(
-                    self.member_management.members
-                )
+                self.save_members()
 
                 print("Member updated successfully.")
 
@@ -209,9 +208,7 @@ class Cli:
                     member.member_id, new_street
                 )
 
-                self.persistence.save_members(
-                    self.member_management.members
-                )
+                self.save_members()
 
                 print("Member updated successfully.")
 
@@ -235,9 +232,7 @@ class Cli:
                     member.member_id, new_email
                 )
 
-                self.persistence.save_members(
-                    self.member_management.members
-                )
+                self.save_members()
 
                 print("Member updated successfully.")
 
@@ -261,9 +256,7 @@ class Cli:
                     member.member_id, new_phone
                 )
 
-                self.persistence.save_members(
-                    self.member_management.members
-                )
+                self.save_members()
 
                 print("Member updated successfully.")
 
@@ -277,9 +270,7 @@ class Cli:
 
                 self.member_management.remove_member(member.member_id)
 
-                self.persistence.save_members(
-                    self.member_management.members
-                )
+                self.save_members()
 
                 print(f"Member {member.first_name} {member.last_name} deleted.")
 

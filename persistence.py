@@ -35,6 +35,9 @@ class Persistence:
         with open("Persistence/members.json", "w", encoding="utf-8") as file:
             json.dump(members_list, file, indent=4, ensure_ascii=False, sort_keys=True)
 
+
+
+
     # Load JSON data and create member objects
     def load_members(self):
 
